@@ -1,0 +1,24 @@
+NODES
+20
+SanFrancisco 0.28 2.31
+LosAngeles 0.62 1.6
+Orlando 5.4 0.5
+WashingtonDC 5.71 2.25
+NewYork 5.94 2.71
+Dallas 3.31 1.04
+Portland 0.46 3.17
+Minneapolis 3.72 3.01
+OklahomaCity 3.18 1.57
+Raleigh 5.67 1.74
+NewOrleans 4.1 0.74
+Denver 2.39 2.18
+SaltLakeCity 1.58 2.5
+Seattle 0.68 3.71
+Chicago 4.42 2.49
+Atlanta 4.93 1.28
+Boston 6.22 2.9
+Phoenix 1.47 1.39
+LasVegas 1.11 1.85
+KansasCity 3.56 2.08
+ARCS
+

@@ -7,28 +7,31 @@ import java.io.*;
 public class HashTable {
 
     public HashObject[] hasharray;
-    public ArrayList<String> keys; //will probably change
+    public int idcount;
+
 
     public HashTable(int length) {
         this.hasharray = new HashObject[length];
     }
 
     public int createHash(String key,int a) {
-        int hashvalue = 0;
+        double hashvalue = 0;
         double power = key.length() - 1;
         double constant = 0;
         for (int i = 0; i < key.length(); i++) {
             constant = Math.pow(a,power);
             power--;
-            hashvalue += (int) (constant * (int) key.charAt(i));
+            hashvalue = hashvalue + (int) (constant * (int) key.charAt(i));
         }
-        return hashvalue % hasharray.length;
+        return (int)hashvalue % hasharray.length;
     }
 
-    public void add(String inputKey,int value) {
+    public void add(String inputKey) {
 
-        int place = createHash(inputKey,37);
-        HashObject newobj = new HashObject(inputKey,value);
+        int place = createHash(inputKey,5); //5 seems like a good pick for this
+        System.out.println(inputKey + ": " + place);
+        HashObject newobj = new HashObject(inputKey,idcount);
+        idcount++;
         if (hasharray[place] == null) {
             hasharray[place] = newobj;
         }
@@ -51,12 +54,11 @@ public class HashTable {
                 return placeobj.getValue();
             }
         }
-        
+
         return 0;
     }
 
     public void readFile(String filename) {
-        keys = new ArrayList<String>();
         BufferedReader bufferedReader = null;
         try {
             bufferedReader = new BufferedReader(new FileReader(filename));
@@ -65,12 +67,17 @@ public class HashTable {
         }
         String line = null;
         try {
+            line = bufferedReader.readLine(); //skips first two lines
+            line = bufferedReader.readLine();
             line = bufferedReader.readLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        String[] arr;
         while (line != null && line.length() > 0) {
-            keys.add(line);
+            line = line.trim();
+            arr  = line.split(" ");
+            add(arr[0]);
             try {
                 line = bufferedReader.readLine();
             } catch (IOException e) {
@@ -78,7 +85,22 @@ public class HashTable {
             }
         }
     }
-    
+
+    public void printString() {
+
+        String s;
+        HashObject obj;
+        for (int i = 0; i < hasharray.length; i++) {
+            s = i + ": ";
+            obj = hasharray[i];
+            while(obj != null) {
+                s += obj.getKey() + " ";
+                obj = obj.getNext();
+            }
+            System.out.println(s);
+        }
+    }
+
 }
 
 class HashObject {
