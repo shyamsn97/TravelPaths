@@ -1,5 +1,4 @@
 package graph;
-import java.util.ArrayList;
 import java.io.*;
 
 /** Custom implementation of a hash table using open hashing, separate chaining.
@@ -8,28 +7,30 @@ public class HashTable {
 
     public HashObject[] hasharray;
     public int idcount;
+    public int a; // used as a constant for hashing strings
 
 
-    public HashTable(int length) {
+    public HashTable(int length,int a) {
         this.hasharray = new HashObject[length];
+        this.a = a;
     }
 
-    public int createHash(String key,int a) {
+    public int createHash(String key) {
         double hashvalue = 0;
         double power = key.length() - 1;
-        double constant = 0;
+        double constant;
         for (int i = 0; i < key.length(); i++) {
             constant = Math.pow(a,power);
             power--;
-            hashvalue = hashvalue + (int) (constant * (int) key.charAt(i));
+            hashvalue += (constant * (int) key.charAt(i));
         }
-        return (int)hashvalue % hasharray.length;
+        return (int) hashvalue % hasharray.length;
     }
 
     public void add(String inputKey) {
 
-        int place = createHash(inputKey,5); //5 seems like a good pick for this
-        System.out.println(inputKey + ": " + place);
+        int place = createHash(inputKey);
+        System.out.println("ADDED: " + inputKey + " HASH: " + place + " NODE ID: " + idcount);
         HashObject newobj = new HashObject(inputKey,idcount);
         idcount++;
         if (hasharray[place] == null) {
@@ -46,16 +47,17 @@ public class HashTable {
 
     public int get(String inputKey) {
 
-        int place = createHash(inputKey,37);
+        int place = createHash(inputKey);
 
         HashObject placeobj = hasharray[place];
         while(placeobj != null) {
             if (placeobj.getKey().equals(inputKey)) {
                 return placeobj.getValue();
             }
+            placeobj = placeobj.getNext();
         }
-
-        return 0;
+        System.out.println("Key not found!");
+        return -1;
     }
 
     public void readFile(String filename) {
@@ -88,6 +90,7 @@ public class HashTable {
 
     public void printString() {
 
+        System.out.println("Hash Table");
         String s;
         HashObject obj;
         for (int i = 0; i < hasharray.length; i++) {
