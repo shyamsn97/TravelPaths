@@ -153,6 +153,8 @@ public class GUIApp extends JFrame {
                 assert(edge.length == 2); // should contain two vertices
                 Point p1 = edge[0];
                 Point p2 = edge[1];
+                System.out.println(p1);
+                System.out.println(p2);
                 g.drawLine(p1.x, p1.y, p2.x, p2.y);
             }
         } // drawEdges

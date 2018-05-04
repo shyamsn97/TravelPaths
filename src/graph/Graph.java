@@ -62,6 +62,7 @@ public class Graph {
 			}
 			else {
 				if (!line.equals("ARCS")) {
+					System.out.println(line);
 					city_edge = new Edge(table.get(arr[1]),Integer.parseInt(arr[2]));
 					addEdge(table.get(arr[0]),city_edge);
 					city_edge = new Edge(table.get(arr[0]),Integer.parseInt(arr[2]));
@@ -74,6 +75,7 @@ public class Graph {
 				e.printStackTrace();
 			}
 		}
+		System.out.println("END");
 
 	}
 
@@ -90,6 +92,7 @@ public class Graph {
 	 */
 	public void addNode(CityNode node) {
 		nodes[table.get(node.getCity())] = node;
+
 		numNodes++;
 	}
 
@@ -114,7 +117,11 @@ public class Graph {
 			adjacencyList[nodeId] = edge;
 		}
 		else {
-			adjacencyList[nodeId].setNext(edge);
+			Edge newedge = adjacencyList[nodeId];
+			while (newedge.getNext() != null) {
+				newedge = newedge.getNext();
+			}
+			newedge.setNext(edge);
 		}
 		numEdges++;
 	}
@@ -126,7 +133,8 @@ public class Graph {
 	 */
 	public int getId(CityNode city) {
 
-        return -1; // Don't forget to change this
+        return table.get(city.getCity());
+
     }
 
 	/**
@@ -139,10 +147,18 @@ public class Graph {
 	 * This info can be obtained from the adjacency list
 	 */
 	public Point[][] getEdges() {
-		int i = 0;
 		Point[][] edges2D = new Point[numEdges][2];
-		// FILL IN CODE
-
+		Edge edge;
+		int j = 0;
+		for (int i = 0; i < this.adjacencyList.length; i++) {
+			edge = this.adjacencyList[i];
+			while(edge != null) {
+				edges2D[j][0] = this.nodes[i].getLocation();
+				edges2D[j][1] = this.nodes[edge.getNeighbor()].getLocation();
+				j++;
+				edge = edge.getNext();
+			}
+		}
 		return edges2D;
 	}
 
@@ -157,7 +173,9 @@ public class Graph {
             return null;
         }
 		Point[] pnodes = new Point[this.nodes.length];
-		// FILL IN CODE
+		for (int i = 0; i < this.nodes.length; i++) {
+			pnodes[i] = this.nodes[i].getLocation();
+		}
 
 		return pnodes;
 	}
@@ -172,9 +190,10 @@ public class Graph {
             System.out.println("Graph has no nodes. Write loadGraph method first. ");
             return null;
         }
-		String[] labels = new String[nodes.length];
-		// FILL IN CODE
-
+		String[] labels = new String[this.nodes.length];
+		for (int i = 0; i < this.nodes.length; i++) {
+			labels[i] = this.nodes[i].getCity();
+		}
 
 		return labels;
 

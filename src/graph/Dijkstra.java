@@ -33,7 +33,7 @@ public class Dijkstra {
 	public List<Integer> computeShortestPath(CityNode origin, CityNode destination) {
 
 	    // FILL IN CODE
-
+		int[][] table = new int[graph.numNodes()][2];
         // Create and initialize Dijkstra's table
         // Create and initialize a Priority Queue
 
