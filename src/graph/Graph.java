@@ -18,6 +18,7 @@ public class Graph {
 	private int numNodes;     // total number of nodes
 	private int numEdges; // total number of edges
 	private Edge[] adjacencyList; // adjacency list; for each vertex stores a linked list of edges
+	public HashTable table = new HashTable(11,5);//hashtable of length 11, using constant a = 5 for when creating the polynomial hash.
     // Your HashTable that maps city names to node ids should probably be here as well
 
 	/**
@@ -27,8 +28,57 @@ public class Graph {
 	 * @param filename name of the file that has nodes and edges
 	 */
 	public void loadGraph(String filename) {
-		// FILL IN CODE
 
+		boolean checker = false;
+		BufferedReader bufferedReader = null;
+		CityNode city_node;
+		Edge city_edge;
+		try {
+			bufferedReader = new BufferedReader(new FileReader(filename));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		String line = null;
+		try {
+			line = bufferedReader.readLine(); //skips first two lines
+			line = bufferedReader.readLine();
+			nodes = new CityNode[Integer.parseInt(line.trim())];
+			adjacencyList = new Edge[Integer.parseInt(line.trim())];
+			line = bufferedReader.readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String[] arr;
+		while (line != null && line.length() > 0) {
+			line = line.trim();
+			if(line.equals("ARCS")) {
+				checker = true;
+			}
+			arr  = line.split(" ");
+			if (checker == false) {
+				table.add(arr[0]);
+				city_node = new CityNode(arr[0],Float.parseFloat(arr[1]),Float.parseFloat(arr[2]));
+				addNode(city_node);
+			}
+			else {
+				if (!line.equals("ARCS")) {
+					city_edge = new Edge(table.get(arr[1]),Integer.parseInt(arr[2]));
+					addEdge(table.get(arr[0]),city_edge);
+					city_edge = new Edge(table.get(arr[0]),Integer.parseInt(arr[2]));
+					addEdge(table.get(arr[1]),city_edge);
+				}
+			}
+			try {
+				line = bufferedReader.readLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	public HashTable returnHashTable() {
+		return  table;
 	}
 
 	/**
@@ -39,7 +89,8 @@ public class Graph {
 	 * @param node a CityNode to add to the graph
 	 */
 	public void addNode(CityNode node) {
-		// FILL IN CODE
+		nodes[table.get(node.getCity())] = node;
+		numNodes++;
 	}
 
 	/**
@@ -58,7 +109,14 @@ public class Graph {
 	 * @param edge edge to add
 	 */
 	public void addEdge(int nodeId, Edge edge) {
-		// FILL IN CODE
+
+		if (adjacencyList[nodeId] == null) {
+			adjacencyList[nodeId] = edge;
+		}
+		else {
+			adjacencyList[nodeId].setNext(edge);
+		}
+		numEdges++;
 	}
 
 	/**

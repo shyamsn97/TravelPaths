@@ -60,34 +60,6 @@ public class HashTable {
         return -1;
     }
 
-    public void readFile(String filename) {
-        BufferedReader bufferedReader = null;
-        try {
-            bufferedReader = new BufferedReader(new FileReader(filename));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        String line = null;
-        try {
-            line = bufferedReader.readLine(); //skips first two lines
-            line = bufferedReader.readLine();
-            line = bufferedReader.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String[] arr;
-        while (line != null && line.length() > 0) {
-            line = line.trim();
-            arr  = line.split(" ");
-            add(arr[0]);
-            try {
-                line = bufferedReader.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public void printString() {
 
         System.out.println("Hash Table");
