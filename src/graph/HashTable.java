@@ -111,9 +111,9 @@ class HashObject {
     private int value; // cost of this edge
     private HashObject next; // reference to the next "edge" in the linked list
 
-    HashObject(String string, int value) {
+    HashObject(String string, int val) {
         key = string;
-        value = value;
+        value = val;
         next = null;
     }
 

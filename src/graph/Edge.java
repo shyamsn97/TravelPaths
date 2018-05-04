@@ -10,5 +10,25 @@ class Edge {
 	private Edge next; // reference to the next "edge" in the linked list
 
 	// FILL IN CODE: constructor, getters, setters
+    public Edge(int new_neighbor, int new_cost) {
+        neighbor = new_neighbor;
+        cost = new_cost;
+        next = null;
+    }
 
+    public Edge getNext() {
+        return next;
+    }
+
+    public void setNext(Edge edge) {
+        this.next = edge;
+    }
+
+    public int getNeighbor() {
+        return neighbor;
+    }
+
+    public int getCost() {
+        return cost;
+    }
  }
