@@ -21,6 +21,9 @@ public class Graph {
 	public HashTable table = new HashTable(11,5);//hashtable of length 11, using constant a = 5 for when creating the polynomial hash.
     // Your HashTable that maps city names to node ids should probably be here as well
 
+	public Edge[] getAdjacencyList() {
+		return this.adjacencyList;
+	}
 	/**
 	 * Read graph info from the given file, and create nodes and edges of
 	 * the graph.
@@ -61,13 +64,14 @@ public class Graph {
 				addNode(city_node);
 			}
 			else {
+
 				if (!line.equals("ARCS")) {
-					System.out.println(line);
 					city_edge = new Edge(table.get(arr[1]),Integer.parseInt(arr[2]));
 					addEdge(table.get(arr[0]),city_edge);
 					city_edge = new Edge(table.get(arr[0]),Integer.parseInt(arr[2]));
 					addEdge(table.get(arr[1]),city_edge);
 				}
+
 			}
 			try {
 				line = bufferedReader.readLine();
@@ -75,7 +79,7 @@ public class Graph {
 				e.printStackTrace();
 			}
 		}
-		System.out.println("END");
+		System.out.println("Finished reading in data");
 
 	}
 
@@ -94,6 +98,24 @@ public class Graph {
 		nodes[table.get(node.getCity())] = node;
 
 		numNodes++;
+	}
+
+	public CityNode[] retNodes() {
+		return nodes;
+	}
+	public CityNode returnCity(int index) {
+		return nodes[index];
+	}
+
+	public void retEdge() {
+		for (int i = 0; i < adjacencyList.length;i++) {
+			Edge curr = adjacencyList[i];
+			while (curr != null) {
+				System.out.print(curr.getNeighbor() + "->");
+				curr = curr.getNext();
+			}
+			System.out.println("");
+		}
 	}
 
 	/**
@@ -205,11 +227,16 @@ public class Graph {
 	 * @return array where each element is an array of 2 points
 	 */
 	public Point[][] getPath(List<Integer> pathOfNodes) {
-		int i = 0;
 		Point[][] edges2D = new Point[pathOfNodes.size()-1][2];
+		int v1;
+		int v2;
         // Each "edge" is an array of size two (one Point is origin, one Point is destination)
-        // FILL IN CODE
-
+        for (int i = 0; i < edges2D.length; i++) {
+        	v1 = pathOfNodes.get(i);
+        	v2 = pathOfNodes.get(i+1);
+        	edges2D[i][0] = nodes[v1].getLocation();
+			edges2D[i][1] = nodes[v2].getLocation();
+		}
         return edges2D;
 	}
 

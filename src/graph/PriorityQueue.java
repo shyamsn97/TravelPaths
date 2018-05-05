@@ -9,6 +9,7 @@ public class PriorityQueue {
 	private PriorityObject[] heap; // the array to store the heap
 	private int maxsize; // the size of the array
 	private int size; // the current number of elements in the array
+	private int[] positions;
 
 	/**
 	 * Constructor
@@ -17,12 +18,14 @@ public class PriorityQueue {
 	public PriorityQueue(int max) {
 
 		maxsize = max;
-		heap = new PriorityObject[maxsize];
+		heap = new PriorityObject[maxsize+1];
 		size = 0;
-		PriorityObject p = new PriorityObject(0,Integer.MIN_VALUE);
+		PriorityObject p = new PriorityObject(0,Integer.MIN_VALUE); 		// Assigned MIN_VALUE so that it's easier to bubble up
 		heap[0] = p;
-		// Note: no actual data is stored at heap[0].
-		// Assigned MIN_VALUE so that it's easier to bubble up
+		positions = new int[maxsize];
+		for (int i = 1; i < positions.length; i++) {
+		    positions[i-1] = i;
+        }
 	}
 
 	/** Return the index of the left child of the element at index pos
@@ -69,43 +72,35 @@ public class PriorityQueue {
 	private void swap(int pos1, int pos2) {
 		PriorityObject tmp;
 		tmp = heap[pos1];
+		int another;
+		another = positions[heap[pos1].retID()];
+		positions[heap[pos1].retID()] = positions[heap[pos2].retID()];
+		positions[heap[pos2].retID()] = another;
 		heap[pos1] = heap[pos2];
 		heap[pos2] = tmp;
 	}
 
-	public int checkIn(int elemId) {
 
-		for (int i = 0; i < heap.length; i++) {
-
-			if (heap[i].retID() == elemId) {
-				return i;
-			}
-
-		}
-		return -1;
-	}
 	/** Insert a new element (nodeId, priority) into the heap.
      *  For this project, the priority is the current "distance"
      *  for this nodeId in Dikstra's algorithm. */
 	public void insert(int nodeId, int priority) {
 
 		PriorityObject elem = new PriorityObject(nodeId,priority);
-		int check = checkIn(nodeId);
-		if(check != -1) {
-			if (heap[check].retPriority() > priority) {
-				reduceKey(check,priority);
-			}
-			return;
-		}
 		size++;
 		heap[size] = elem;
-
 		int current = size;
 		while (heap[current].retPriority() < heap[parent(current)].retPriority()) {
 			swap(current, parent(current));
 			current = parent(current);
 		}
+	}
 
+	public boolean isEmpty() {
+		if (size == 0) {
+			return true;
+		}
+		return false;
 	}
 
     /**
@@ -124,15 +119,6 @@ public class PriorityQueue {
 
 	}
 
-	public int returnNode(int nodeId) {
-
-		for (int i = 0; i < heap.length; i++) {
-			if(heap[i].retID() == nodeId) {
-				return i;
-			}
-		}
-		return -1;
-	}
 
 	/**
      * Reduce the priority of the element with the given nodeId to newPriority.
@@ -142,11 +128,11 @@ public class PriorityQueue {
      */
 
 	public void reduceKey(int nodeId, int newPriority) {
-
-		int index = returnNode(nodeId);
-		if (index != -1) {
-			heap[index].setPriority(newPriority);
-			pushdown(1);
+		heap[positions[nodeId]].setPriority(newPriority);
+		int current = positions[nodeId];
+		while (heap[current].retPriority() < heap[parent(current)].retPriority()) {
+			swap(current, parent(current));
+			current = parent(current);
 		}
 	}
 
@@ -170,6 +156,15 @@ public class PriorityQueue {
 			position = smallestchild;
 		}
 	}
+
+	public void printToString() {
+	    for (int i = 1; i < heap.length; i++) {
+	        if (heap[i] != null) {
+                System.out.println(heap[i].retID() + " : " + heap[i].retPriority());
+            }
+        }
+    }
+
 
 }
 

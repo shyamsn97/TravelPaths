@@ -22,6 +22,12 @@ public class Dijkstra {
 		graph.loadGraph(filename);
 	}
 
+
+	public void printTable(double[][] table) {
+		for (int i = 0; i < table.length; i++) {
+			System.out.println("NODEID: " + i + " " + "COST: " + table[i][0] + " " + "PATH: " + table[i][1]);
+		}
+	}
 	/**
 	 * Returns the shortest path between the origin vertex and the destination vertex.
 	 * The result is stored in shortestPathEdges.
@@ -32,10 +38,67 @@ public class Dijkstra {
 	 */
 	public List<Integer> computeShortestPath(CityNode origin, CityNode destination) {
 
-	    // FILL IN CODE
-		int[][] table = new int[graph.numNodes()][2];
-        // Create and initialize Dijkstra's table
-        // Create and initialize a Priority Queue
+		double[][] table = new double[graph.numNodes()][2];
+		boolean[] visited = new boolean[graph.numNodes()];
+		PriorityQueue priority = new PriorityQueue(graph.numNodes());
+
+		priority.insert(graph.getId(origin),0);
+		for (int i = 1; i < graph.numNodes(); i++) {
+			priority.insert(i,Integer.MAX_VALUE);
+		}
+
+		for (int i = 1; i < table.length; i++) {
+			table[i][0] = Double.POSITIVE_INFINITY;
+		}
+
+
+
+		Edge[] adjacency = graph.getAdjacencyList();
+
+		double tmp = 0;
+		int index = 0;
+
+		table[graph.getId(origin)][0] = 0;
+		table[graph.getId(origin)][1] = -1;
+
+
+		while (!priority.isEmpty()) {
+
+			index = priority.removeMin();
+			visited[index] = true;
+			Edge curr = adjacency[index];
+			tmp = table[index][0];
+
+			while (curr != null) {
+				if (!visited[curr.getNeighbor()]) {
+					System.out.println("City found with vertex: " + index + " " + graph.returnCity(index).getCity() + "|||" + " " + graph.returnCity(curr.getNeighbor()).getCity());
+					visited[curr.getNeighbor()] = true; //not really visited, but used to prevent a lot of useless backtracking
+				}
+
+				if (tmp + curr.getCost() < table[curr.getNeighbor()][0]) {
+					table[curr.getNeighbor()][0] = tmp + curr.getCost();
+					table[curr.getNeighbor()][1] = index;
+					priority.reduceKey(curr.getNeighbor(), (int)(tmp + curr.getCost()));
+				}
+				curr = curr.getNext();
+			}
+		}
+
+
+		ArrayList<Integer> list = new ArrayList<Integer>();
+
+		printTable(table);
+
+		int check = graph.getId(destination);
+
+		while (check != -1) {
+			list.add(check);
+			check = (int)table[check][1];
+		}
+
+
+
+		// Create and initialize a Priority Queue
 
         // Run Dijkstra
 
@@ -43,7 +106,8 @@ public class Dijkstra {
 
         // The result should be in an instance variable called "shortestPath" and
         // should also be returned by the method
-	    return null; // don't forget to change it
+		this.shortestPath = list;
+	    return list; // don't forget to change it
     }
 
     /**
@@ -53,8 +117,9 @@ public class Dijkstra {
      * @return 2D array of points
      */
     public Point[][] getPath() {
-        if (shortestPath == null)
-            return null;
+        if (shortestPath == null){
+			return null;
+		}
         return graph.getPath(shortestPath); // delegating this task to the Graph class
     }
 
