@@ -47,8 +47,13 @@ public class Dijkstra {
 			priority.insert(i,Integer.MAX_VALUE);
 		}
 
-		for (int i = 1; i < table.length; i++) {
-			table[i][0] = Double.POSITIVE_INFINITY;
+		for (int i = 0; i < table.length; i++) {
+			if (i == graph.getId(origin)) {
+				table[i][0] = 0;
+			}
+			else {
+				table[i][0] = Double.POSITIVE_INFINITY;
+			}
 		}
 
 
@@ -88,9 +93,9 @@ public class Dijkstra {
 		ArrayList<Integer> list = new ArrayList<Integer>();
 
 		printTable(table);
-
+		System.out.println("ORIGIN: " + graph.getId(origin) + " : " + origin.getCity());
 		int check = graph.getId(destination);
-
+		System.out.println("DESTINATION: " + graph.getId(destination)+ " : " + destination.getCity());
 		while (check != -1) {
 			list.add(check);
 			check = (int)table[check][1];
