@@ -4,8 +4,6 @@ package graph;
  * A class that represents a graph where nodes are cities (of type CityNode)
  * and edges connect them and the cost of each edge is the distance between
  * the cities.
- * Fill in code in this class. You may add additional methods and variables.
- * You are required to implement a HashTable and a PriorityQueue from scratch.
  */
 import java.util.*;
 import java.io.*;
@@ -19,7 +17,6 @@ public class Graph {
 	private int numEdges; // total number of edges
 	private Edge[] adjacencyList; // adjacency list; for each vertex stores a linked list of edges
 	public HashTable table = new HashTable(11,5);//hashtable of length 11, using constant a = 5 for when creating the polynomial hash.
-    // Your HashTable that maps city names to node ids should probably be here as well
 
 	public Edge[] getAdjacencyList() {
 		return this.adjacencyList;

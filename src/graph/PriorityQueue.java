@@ -1,9 +1,6 @@
 package graph;
 
-/** A priority queue: implemented using a min heap.
- *  You may not use any Java built-in classes, you should implement
- *  PriorityQueue yourself. You may use/modify the MinHeap code posted
- *  by the instructor under Examples, as long as you understand it. */
+/** A priority queue: implemented using a min heap. */
 public class PriorityQueue {
 
 	private PriorityObject[] heap; // the array to store the heap
@@ -122,7 +119,6 @@ public class PriorityQueue {
 
 	/**
      * Reduce the priority of the element with the given nodeId to newPriority.
-     * You may assume newPriority is less or equal to the current priority for this node.
      * @param nodeId id of the node
      * @param newPriority new value of priority
      */

@@ -89,8 +89,6 @@ public class GUIApp extends JFrame {
 
         /**
          * The method is responsible for drawing everything on the panel.
-         * Do NOT call it explicitly. Instead, call repaint() when
-         * something changes and needs to be repainted.
          * @param g Graphics
          */
         protected void paintComponent(Graphics g) {

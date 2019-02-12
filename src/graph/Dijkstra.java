@@ -2,7 +2,6 @@ package graph;
 
 /** Class Dijkstra. Implementation of Dijkstra's
  *  algorithm on the graph for finding the shortest path.
- *  Fill in code. You may add additional helper methods or classes.
  */
 
 import java.util.*;
@@ -106,8 +105,6 @@ public class Dijkstra {
 		// Create and initialize a Priority Queue
 
         // Run Dijkstra
-
-        // Compute the nodes on the shortest path by "backtracking" using the table
 
         // The result should be in an instance variable called "shortestPath" and
         // should also be returned by the method

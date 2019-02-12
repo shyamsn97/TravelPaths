@@ -9,13 +9,12 @@ public class CityNode  {
 	private final String city;
 	private Point location;
 
-	/** Create a node of the graph for the given city (and x and coordinates)
+	/** Node of the graph for the given city (and x and coordinates)
 	 * @param cityName
 	 * @param x
 	 * @param y
 	 */
 	public CityNode(String cityName, double x, double y) {
-		// Do not change this method
 		this.city = cityName;
 		int xint = (int) (507*x / 7.0);
 		int yint = (int) (289 - 289*y/4.0);
